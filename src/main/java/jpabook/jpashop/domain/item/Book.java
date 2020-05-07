@@ -1,10 +1,11 @@
 package jpabook.jpashop.domain.item;
 
-import lombok.Getter;
-import lombok.Setter;
+import jpabook.jpashop.domain.Category;
+import lombok.*;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import java.util.List;
 
 @Entity
 @DiscriminatorValue("B")
