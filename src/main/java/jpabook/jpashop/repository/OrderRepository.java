@@ -97,4 +97,25 @@ public class OrderRepository {
         ).getResultList();
     }
 
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+        return em.createQuery(
+                "select o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
+    //DB에 distinct 날리고
+    //엔티티 중복을 걸러서 컬렉션에 담아줌
+    public List<Order> findAllWithItem() {
+        return em.createQuery(
+                "select distinct o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d" +
+                        " join  fetch  o.orderItems oi" +
+                        " join  fetch  oi.item i", Order.class)
+                .getResultList();
+    }
 }
