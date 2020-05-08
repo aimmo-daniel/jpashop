@@ -1,10 +1,9 @@
 package jpabook.jpashop.repository;
 
-import javafx.beans.binding.BooleanExpression;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.OrderSearch;
-import jpabook.jpashop.domain.OrderStatus;
+import jpabook.jpashop.repository.order.simplequery.OrderSimpleQueryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -90,33 +89,12 @@ public class OrderRepository {
         return query.getResultList();
     }
 
-    /*    public List<Order> findAll(OrderSearch orderSearch) {
-            QOrder order = Qorder.order;
-            QMember member = Qmember.member;
-
-            return query
-                    .select(order)
-                    .from(order)
-                    .join(order.member, member)
-                    .where(statusEq(orderSearch.getOrderStatus()),
-                            nameLike(orderSearch.getMemberName()))
-                    .limit(1000)
-                    .fetch();
-        }
-
-        private BooleanExpression statusEq(OrderStatus statusCond) {
-            if(statusCond == null) {
-                return null;
-            }
-            return order.status.eq(statusCond);
-        }
-
-        private BooleanExpression nameLike(String nameCond) {
-            if (!StringUtils.hasText(nameCond)) {
-                return null;
-            }
-            return member.name.like(nameCond);
-        }*/
-
+    public List<Order> findAllWithMemberDelivery() {
+        return em.createQuery(
+                "select o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d", Order.class
+        ).getResultList();
+    }
 
 }
